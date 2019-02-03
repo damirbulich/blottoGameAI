@@ -8,4 +8,10 @@ class Kula{
     void putVojnici(int brVojnika){
         this.vojnici=brVojnika;
     }
+    int getVojnici(){
+        return this.vojnici;
+    }
+    int getBodovi(){
+        return this.bodovi;
+    }
 }
