@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - AiBlotto",
+            "request": "launch",
+            "mainClass": "AiBlotto",
+            "projectName": "blottoGameAI_3ad8125b"
+        }
+    ]
+}
