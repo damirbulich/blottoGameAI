@@ -2,15 +2,20 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class AiBlotto{
-
-
-
-
+    
     public static void main(String[] args){
 
         int brGen = 20;             //broj generacija u evoluciji
 
         int brIgraca = 5000;          // broj igraca po generaciji
+
+
+
+        /*
+        
+        uncomment ili postavi svoja pravila igre (bodove na kulama)
+        
+        */
 
         //int[] kule = {25,14,8,3,1,1,3,8,14,25}; 
         //int[] kule = {10,0,0,0,10};  
@@ -28,15 +33,9 @@ Stvaramo generaciju od |brIgraca| igraca koji se medusobno bore
 */
 
         List<Player> generacija = new ArrayList<>();
-        /*generacija.add(new Player());
-        generacija.get(0).addKule(brKula);
-        generacija.get(0).addVojnici(0, 2);
-        generacija.get(0).addVojnici(1, 31);
-        generacija.get(0).addVojnici(2, 31);
-        generacija.get(0).addVojnici(3, 31);
-        generacija.get(0).addVojnici(4, 23);
-        generacija.get(0).addVojnici(5, 2);
-        System.out.println(generacija.get(0).getStrategija());*/
+
+
+
         for (int i=0;i<brIgraca;i++){
             generacija.add(new Player());
             generacija.get(i).addKule(kule);
@@ -47,7 +46,11 @@ Stvaramo generaciju od |brIgraca| igraca koji se medusobno bore
 
         for (int g=1; g<=brGen; g++){
 
+/*
 
+        U geneaciji prolazimo kroz sve igrace i gledamo koji igrac je imao najuspjesniju taktiku
+        
+*/
             
 
             for (int i=0;i<brIgraca-1;i++){
@@ -74,7 +77,11 @@ Stvaramo generaciju od |brIgraca| igraca koji se medusobno bore
                 }
             }
 
+/*
 
+        memoriramo najbolju taktiku
+
+*/
 
             Player najbolji = new Player();
             for (int i=0; i<brIgraca; i++){
@@ -84,11 +91,20 @@ Stvaramo generaciju od |brIgraca| igraca koji se medusobno bore
             }
             System.out.println("Gen: "+g+"  Najbolji: "+najbolji.getStrategija());
 
+/*
 
+            resetiramo generaciju te kao prvog igraca sstavljamo najboljeg iz prethodne generacije
+
+*/
             generacija.clear();
             najbolji.resetScore();
             generacija.add(najbolji);
 
+/*
+
+            popunjamo generaciju sa mutantima najboljeg igraca
+
+*/
 
             for (int i=1;i<brIgraca;i++){
                 generacija.add(new Player());
@@ -96,7 +112,7 @@ Stvaramo generaciju od |brIgraca| igraca koji se medusobno bore
                 generacija.get(i).mutate(najbolji, ukBrVojnika);;
                 //System.out.println(generacija.get(i).getStrategija());
             }
-            najbolji=null;
+            najbolji=null;              //resetiramo najboljeg igraca
 
 
         }
