@@ -7,6 +7,7 @@ class Player{
     Random rn = new Random();
     private List<Kula> strategija = new ArrayList<>();
     private int score = 0;
+    private int[] strat = new int[30];
 
     void addKule(int[] bodovanje){
         for (int i=0;i<bodovanje.length;i++){
@@ -22,25 +23,41 @@ class Player{
     void addScore(int bod){
         this.score+=bod;
     }
-    void calcRnStrategy(int ukBrVojnika){
+    void calcRnStrategy(int ukVojnika){
         int i;
-        for(i=0;i<this.strategija.size()-1;i++){
-            int tempVojnika = rn.nextInt(ukBrVojnika);
-            this.strategija.get(i).putVojnici(tempVojnika);
-            ukBrVojnika-=tempVojnika;
+        int uk=0;
+        int preostali = ukVojnika;
+        for(i=0;i<this.strategija.size();i++){
+            int tempVojnika = rn.nextInt(10000);
+            //System.out.println("tempvoj: "+tempVojnika);
+            this.strat[i]=tempVojnika;
+            uk+=this.strat[i];
         }
-        this.strategija.get(i).putVojnici(ukBrVojnika);
-        //Collections.shuffle(this.strategija);
+        for(i=0;i<this.strategija.size()-1;i++){
+            this.strategija.get(i).putVojnici((int)Math.floor((float)this.strat[i]/uk*ukVojnika));
+            preostali-=(int)Math.floor((float)this.strat[i]/uk*ukVojnika);
+        }
+        preostali-=(int)Math.floor((float)this.strat[i]/uk*ukVojnika);
+        this.strategija.get(i).putVojnici((int)Math.floor((float)this.strat[i]/uk*ukVojnika)+preostali);
     }
-    void mutate(Player najbolji, int ukBrVojnika){
+    void mutate(Player najbolji, int ukVojnika){
         int i;
-        for(i=0;i<this.strategija.size()-1;i++){
-            int tempVojnika = rn.nextInt(ukBrVojnika);
-            this.strategija.get(i).putVojnici(tempVojnika);
-            ukBrVojnika-=tempVojnika;
+        int uk=0;
+        int preostali = ukVojnika;
+        for(i=0;i<this.strategija.size();i++){
+            int tempVojnika = rn.nextInt(1000)-500;
+            this.strat[i] = ((int)Math.floor(najbolji.getBestStrat(i)*(1+(float)tempVojnika/10000)));
+            uk+=this.strat[i];
         }
-        this.strategija.get(i).putVojnici(ukBrVojnika);
-        //Collections.shuffle(this.strategija);
+        for(i=0;i<this.strategija.size()-1;i++){
+            this.strategija.get(i).putVojnici((int)Math.floor((float)this.strat[i]/uk*ukVojnika));
+            preostali-=(int)Math.floor((float)this.strat[i]/uk*ukVojnika);
+        }
+        preostali-=(int)Math.floor((float)this.strat[i]/uk*ukVojnika);
+        this.strategija.get(i).putVojnici((int)Math.floor((float)this.strat[i]/uk*ukVojnika)+preostali);
+    }
+    int getBestStrat(int i){
+        return this.strat[i];
     }
     int getVojniciFromKula(int brKule){
         return this.strategija.get(brKule).getVojnici();
@@ -52,10 +69,10 @@ class Player{
         return this.score;
     }
     String getStrategija(){
-        String strat="";
+        String strateg="";
         for(int i=0;i<this.strategija.size();i++){
-            strat+=(this.strategija.get(i).getVojnici()+" ");
+            strateg+=(this.strategija.get(i).getVojnici()+" ");
         }
-        return strat;
+        return strateg;
     }
 }
